@@ -10,3 +10,20 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# IDES
+/.idea
+
+logs
+project/project
+project/target
+target
+bin
+.cache
+.history
+/RUNNING_PID
+.settings
+.target
+.project
+.DS_STORE
+activator-sbt-*-shim.sbt
