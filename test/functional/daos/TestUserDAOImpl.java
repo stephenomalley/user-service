@@ -14,7 +14,7 @@ import static play.test.Helpers.running;
 /**
  * Created by somalley on 29/09/16.
  */
-public class TestUserDAOImplInt extends WithApplication {
+public class TestUserDAOImpl extends WithApplication {
 
     @Before
     public void setup() {

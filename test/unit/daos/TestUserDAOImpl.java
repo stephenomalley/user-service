@@ -1,3 +1,5 @@
+package unit.daos;
+
 import com.avaje.ebean.Model.Finder;
 import daos.UserDAOImpl;
 import models.User;
