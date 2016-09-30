@@ -35,7 +35,7 @@ public class TestUserDAOImpl {
 
     @Test
     public void testFindUserWhenUserMissing() {
-        running(fakeApplication(inMemoryDatabase()), () -> {
+            running(fakeApplication(inMemoryDatabase()), () -> {
             UserDAOImpl dao = new UserDAOImpl(mockFinder);
             when(mockFinder.byId(1)).thenReturn(null);
             User actual = dao.find(1);

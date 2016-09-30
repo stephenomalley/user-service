@@ -1,3 +1,5 @@
+package functional.daos;
+
 import com.avaje.ebean.Model;
 import daos.UserDAOImpl;
 import models.User;

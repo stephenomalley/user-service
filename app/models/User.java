@@ -22,7 +22,7 @@ public class User extends Model {
 
     public String name;
 
-    @Column(name = "user_name")
+    @Column(name = "username")
     public String userName;
 
     @Constraints.Email
