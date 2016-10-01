@@ -1,6 +1,6 @@
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-// scalaVersion := "2.11.8"
+// scalaVersion := "2.11.6"
 
 // The Play plugin
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.3")

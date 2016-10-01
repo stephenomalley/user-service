@@ -1,12 +1,16 @@
 package controllers;
 
 import com.avaje.ebean.annotation.Transactional;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.User;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import services.UserService;
 
 import javax.inject.Inject;
+
+import static controllers.Constants.NOT_FOUND_MSG;
 
 /**
  * Created by somalley on 28/09/16.
@@ -23,6 +27,13 @@ public class UserController extends Controller {
     @Transactional(readOnly = true)
     public Result get(Integer id) {
         User user = userService.find(id);
+        if (user == null) {
+            ObjectNode body = Json.newObject();
+            body.put("message", NOT_FOUND_MSG + " [" + id + "].");
+            body.put("errorCode", 100);
+            body.put("additionalInformation", "blank");
+            return notFound(body).as("application/json");
+        }
         return null;
     }
 
