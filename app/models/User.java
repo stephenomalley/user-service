@@ -34,5 +34,4 @@ public class User extends Model {
 
     public Timestamp updatedTimestamp;
 
-
 }

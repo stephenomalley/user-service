@@ -10,16 +10,17 @@ import org.mockito.runners.MockitoJUnitRunner;
 import play.Application;
 import play.inject.guice.GuiceApplicationBuilder;
 import play.libs.Json;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.test.WithApplication;
 import services.UserService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static play.mvc.Http.Status;
 import static play.test.Helpers.contentAsString;
+import static play.test.Helpers.fakeRequest;
 
 /**
  * Created by somalley on 30/09/16.
@@ -34,6 +35,9 @@ public class TestUserController extends WithApplication {
     @Before
     public void setup() {
         this.controller = new UserController(mockService);
+        Http.Context context = mock(Http.Context.class);
+        when(context.request()).thenReturn(fakeRequest().build());
+        Http.Context.current.set(context);
     }
 
     @Override
@@ -72,7 +76,7 @@ public class TestUserController extends WithApplication {
         when(mockService.find(1)).thenReturn(null);
         Result response = controller.get(1);
         ObjectNode expected = getTestResponse();
-        assertTrue(contentAsString(response).contains(expected.get("errorCode").toString()));
+        assertTrue(contentAsString(response).contains(expected.get("errorLink").toString()));
         verify(mockService).find(1);
     }
 
@@ -80,7 +84,7 @@ public class TestUserController extends WithApplication {
         ObjectNode expected = Json.newObject();
         expected.put("message", "User not found. You have requested an invalid user [1].");
         expected.put("errorCode", 100);
-        expected.put("errorLink", "/errorcode/100");
+        expected.put("errorLink", "http://localhost/assets/public/html/errorcode.html");
         return expected;
     }
 

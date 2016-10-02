@@ -1,6 +1,7 @@
 package daos;
 
 import com.avaje.ebean.Model.Finder;
+import com.google.inject.Inject;
 import models.User;
 
 /**
@@ -10,12 +11,17 @@ public class UserDAOImpl implements UserDAO {
 
     public Finder<Integer, User> finder;
 
-    public UserDAOImpl(Finder<Integer, User> finder) {
-        this.finder = finder;
+    @Inject
+    public UserDAOImpl() {
     }
 
     @Override
     public User find(Integer id) {
         return this.finder.byId(id);
+    }
+
+
+    public void setFinder(Finder<Integer, User> finder) {
+        this.finder = finder;
     }
 }

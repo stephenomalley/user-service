@@ -31,7 +31,7 @@ public class UserController extends Controller {
             ObjectNode body = Json.newObject();
             body.put("message", NOT_FOUND_MSG + " [" + id + "].");
             body.put("errorCode", 100);
-            body.put("additionalInformation", "blank");
+            body.put("additionalInformation", routes.Assets.at("public/html/errorcode.html").absoluteURL(request()));
             return notFound(body).as("application/json");
         }
         return null;

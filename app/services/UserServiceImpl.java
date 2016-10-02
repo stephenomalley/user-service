@@ -1,5 +1,6 @@
 package services;
 
+import com.google.inject.Inject;
 import daos.UserDAO;
 import models.User;
 
@@ -10,6 +11,7 @@ public class UserServiceImpl implements UserService {
 
     public UserDAO userDAO;
 
+    @Inject
     public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }

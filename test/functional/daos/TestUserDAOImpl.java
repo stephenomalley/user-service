@@ -25,7 +25,8 @@ public class TestUserDAOImpl extends WithApplication {
     @Test
     public void testFindUserInDatabase() {
         running(fakeApplication(), () -> {
-            UserDAOImpl dao = new UserDAOImpl(new Model.Finder<>(User.class));
+            UserDAOImpl dao = new UserDAOImpl();
+            dao.setFinder(new Model.Finder<>(User.class));
             User actual = dao.find(1);
             assertNotNull(actual);
         });
@@ -34,7 +35,8 @@ public class TestUserDAOImpl extends WithApplication {
     @Test
     public void testFindUserInDatabaseCorrectUsername() {
         running(fakeApplication(), () -> {
-            UserDAOImpl dao = new UserDAOImpl(new Model.Finder<>(User.class));
+            UserDAOImpl dao = new UserDAOImpl();
+            dao.setFinder(new Model.Finder<>(User.class));
             User actual = dao.find(1);
             assertEquals(actual.userName, "test-username");
         });
@@ -43,7 +45,8 @@ public class TestUserDAOImpl extends WithApplication {
     @Test
     public void testCantFindUserNotInDatabase() {
         running(fakeApplication(), () -> {
-            UserDAOImpl dao = new UserDAOImpl(new Model.Finder<>(User.class));
+            UserDAOImpl dao = new UserDAOImpl();
+            dao.setFinder(new Model.Finder<>(User.class));
             User actual = dao.find(1000);
             assertNull(actual);
         });
@@ -54,7 +57,8 @@ public class TestUserDAOImpl extends WithApplication {
         running(fakeApplication(), () -> {
             User expected = new User();
             expected.save();
-            UserDAOImpl dao = new UserDAOImpl(new Model.Finder<>(User.class));
+            UserDAOImpl dao = new UserDAOImpl();
+            dao.setFinder(new Model.Finder<>(User.class));
             User actual = dao.find(expected.id);
             assertEquals(expected, actual);
         });
