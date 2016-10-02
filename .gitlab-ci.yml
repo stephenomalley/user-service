@@ -16,4 +16,4 @@ stages:
 test:
   stage: test
   script:
-    - sbt clean test
+    - sbt clean test  -Dconfig.file=conf/application.test.conf
