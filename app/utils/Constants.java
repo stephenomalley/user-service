@@ -1,4 +1,4 @@
-package controllers;
+package utils;
 
 /**
  * Created by somalley on 30/09/16.

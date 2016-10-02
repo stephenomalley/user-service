@@ -10,7 +10,7 @@ import services.UserService;
 
 import javax.inject.Inject;
 
-import static controllers.Constants.NOT_FOUND_MSG;
+import static utils.Constants.NOT_FOUND_MSG;
 
 /**
  * Created by somalley on 28/09/16.
@@ -28,14 +28,17 @@ public class UserController extends Controller {
     public Result get(Integer id) {
         User user = userService.find(id);
         if (user == null) {
-            ObjectNode body = Json.newObject();
-            body.put("message", NOT_FOUND_MSG + " [" + id + "].");
-            body.put("errorCode", 100);
-            body.put("additionalInformation", routes.Assets.at("public/html/errorcode.html").absoluteURL(request()));
-            return notFound(body).as("application/json");
+            return notFound(getErrorResponse(NOT_FOUND_MSG, 100, id)).as("application/json");
         }
-        return null;
+        return ok(Json.toJson(user)).as("application/json");
     }
 
+    private ObjectNode getErrorResponse(String message, int errorCode, Integer id) {
+        ObjectNode body = Json.newObject();
+        body.put("message", message + " [" + id + "].");
+        body.put("errorCode", errorCode);
+        body.put("additionalInformation", routes.Assets.at("public/html/errorcode.html").absoluteURL(request()));
+        return body;
+    }
 
 }

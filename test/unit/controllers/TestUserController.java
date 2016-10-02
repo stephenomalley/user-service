@@ -2,6 +2,7 @@ package unit.controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import controllers.UserController;
+import models.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,12 +81,34 @@ public class TestUserController extends WithApplication {
         verify(mockService).find(1);
     }
 
+    @Test
+    public void testGetReturnsUser() {
+        User expected = new User("username");
+        when(mockService.find(1)).thenReturn(expected);
+        Result response = controller.get(1);
+        assertEquals(expected.userName, parseResponseData(response).userName);
+        verify(mockService).find(1);
+    }
+
+    @Test
+    public void testGetReturnsSuccessStatus() {
+        User expected = new User("username");
+        when(mockService.find(1)).thenReturn(expected);
+        Result response = controller.get(1);
+        assertEquals(Status.OK, response.status());
+        verify(mockService).find(1);
+    }
+
     private ObjectNode getTestResponse() {
         ObjectNode expected = Json.newObject();
         expected.put("message", "User not found. You have requested an invalid user [1].");
         expected.put("errorCode", 100);
         expected.put("errorLink", "http://localhost/assets/public/html/errorcode.html");
         return expected;
+    }
+
+    private User parseResponseData(Result result) {
+        return Json.fromJson(Json.parse(contentAsString(result)), User.class);
     }
 
 

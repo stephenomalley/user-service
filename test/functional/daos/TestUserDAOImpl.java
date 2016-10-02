@@ -8,8 +8,7 @@ import org.junit.Test;
 import play.test.WithApplication;
 
 import static org.junit.Assert.*;
-import static play.test.Helpers.fakeApplication;
-import static play.test.Helpers.running;
+import static play.test.Helpers.*;
 
 /**
  * Created by somalley on 29/09/16.
@@ -24,7 +23,7 @@ public class TestUserDAOImpl extends WithApplication {
 
     @Test
     public void testFindUserInDatabase() {
-        running(fakeApplication(), () -> {
+        running(fakeApplication(inMemoryDatabase("test")), () -> {
             UserDAOImpl dao = new UserDAOImpl();
             dao.setFinder(new Model.Finder<>(User.class));
             User actual = dao.find(1);
@@ -34,7 +33,7 @@ public class TestUserDAOImpl extends WithApplication {
 
     @Test
     public void testFindUserInDatabaseCorrectUsername() {
-        running(fakeApplication(), () -> {
+        running(fakeApplication(inMemoryDatabase("test")), () -> {
             UserDAOImpl dao = new UserDAOImpl();
             dao.setFinder(new Model.Finder<>(User.class));
             User actual = dao.find(1);
@@ -44,7 +43,7 @@ public class TestUserDAOImpl extends WithApplication {
 
     @Test
     public void testCantFindUserNotInDatabase() {
-        running(fakeApplication(), () -> {
+        running(fakeApplication(inMemoryDatabase("test")), () -> {
             UserDAOImpl dao = new UserDAOImpl();
             dao.setFinder(new Model.Finder<>(User.class));
             User actual = dao.find(1000);
@@ -54,7 +53,7 @@ public class TestUserDAOImpl extends WithApplication {
 
     @Test
     public void testFindCorrectUserInDatabase() {
-        running(fakeApplication(), () -> {
+        running(fakeApplication(inMemoryDatabase("test")), () -> {
             User expected = new User();
             expected.save();
             UserDAOImpl dao = new UserDAOImpl();

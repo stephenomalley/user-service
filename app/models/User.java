@@ -17,7 +17,7 @@ public class User extends Model {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "users_id_seq")
     public Integer id;
 
     public String name;
@@ -33,5 +33,4 @@ public class User extends Model {
     public Timestamp deletedTimestamp;
 
     public Timestamp updatedTimestamp;
-
 }

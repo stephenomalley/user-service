@@ -1,5 +1,6 @@
 package daos;
 
+import com.avaje.ebean.Model;
 import models.User;
 
 /**
@@ -7,5 +8,7 @@ import models.User;
  */
 public interface UserDAO {
 
-    public User find(Integer id);
+    User find(Integer id);
+
+    void setFinder(Model.Finder<Integer, User> finder);
 }

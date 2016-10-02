@@ -25,7 +25,7 @@ public class TestUserDAOImpl {
 
     @Test
     public void testFindUserReturnsUser() {
-        running(fakeApplication(inMemoryDatabase()), () -> {
+        running(fakeApplication(inMemoryDatabase("test")), () -> {
             User expected = new User("mock");
             UserDAOImpl dao = new UserDAOImpl();
             dao.setFinder(mockFinder);
@@ -38,7 +38,7 @@ public class TestUserDAOImpl {
 
     @Test
     public void testFindUserWhenUserMissing() {
-            running(fakeApplication(inMemoryDatabase()), () -> {
+        running(fakeApplication(inMemoryDatabase("test")), () -> {
                 UserDAOImpl dao = new UserDAOImpl();
                 dao.setFinder(mockFinder);
             when(mockFinder.byId(1)).thenReturn(null);

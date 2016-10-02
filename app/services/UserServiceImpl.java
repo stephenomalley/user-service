@@ -1,5 +1,6 @@
 package services;
 
+import com.avaje.ebean.Model.Finder;
 import com.google.inject.Inject;
 import daos.UserDAO;
 import models.User;
@@ -14,6 +15,7 @@ public class UserServiceImpl implements UserService {
     @Inject
     public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
+        this.userDAO.setFinder(new Finder<>(User.class));
     }
 
     @Override
