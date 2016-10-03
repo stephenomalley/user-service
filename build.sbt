@@ -11,3 +11,5 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava, PlayEbean).settin
     "mysql" % "mysql-connector-java" % "5.1.39"
   )
 }
+
+javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
