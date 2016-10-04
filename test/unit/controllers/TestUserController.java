@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import play.Application;
+import play.data.FormFactory;
 import play.inject.guice.GuiceApplicationBuilder;
 import play.libs.Json;
 import play.mvc.Http;
@@ -23,19 +24,22 @@ import static play.mvc.Http.Status;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.fakeRequest;
 
+import static play.inject.Bindings.bind;
 /**
  * Created by somalley on 30/09/16.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class TestUserController extends WithApplication {
 
+    private final UserService mockService = mock(UserService.class);
+
     @Mock
-    private UserService mockService;
+    private FormFactory mockForm;
     private UserController controller;
 
     @Before
     public void setup() {
-        this.controller = new UserController(mockService);
+        this.controller = new UserController(mockService, mockForm);
         Http.Context context = mock(Http.Context.class);
         when(context.request()).thenReturn(fakeRequest().build());
         Http.Context.current.set(context);
@@ -43,7 +47,7 @@ public class TestUserController extends WithApplication {
 
     @Override
     protected Application provideApplication() {
-        return new GuiceApplicationBuilder().build();
+        return new GuiceApplicationBuilder().overrides(bind(UserService.class).toInstance(mockService)).build();
     }
 
     @Test
@@ -83,16 +87,18 @@ public class TestUserController extends WithApplication {
 
     @Test
     public void testGetReturnsUser() {
-        User expected = new User("username");
+        User expected = new User();
+        expected.username = "username";
         when(mockService.find(1)).thenReturn(expected);
         Result response = controller.get(1);
-        assertEquals(expected.userName, parseResponseData(response).userName);
+        assertEquals(expected.username, parseResponseData(response).username);
         verify(mockService).find(1);
     }
 
     @Test
     public void testGetReturnsSuccessStatus() {
-        User expected = new User("username");
+        User expected = new User();
+        expected.username = "username";
         when(mockService.find(1)).thenReturn(expected);
         Result response = controller.get(1);
         assertEquals(Status.OK, response.status());

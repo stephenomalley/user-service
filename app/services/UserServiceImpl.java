@@ -22,4 +22,9 @@ public class UserServiceImpl implements UserService {
     public User find(Integer id) {
         return userDAO.find(id);
     }
+
+    @Override
+    public User create(User user) {
+        return userDAO.create(user);
+    }
 }

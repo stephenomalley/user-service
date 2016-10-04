@@ -20,6 +20,12 @@ public class UserDAOImpl implements UserDAO {
         return this.finder.byId(id);
     }
 
+    @Override
+    public User create(User user) {
+        user.save();
+        return user;
+    }
+
 
     public void setFinder(Finder<Integer, User> finder) {
         this.finder = finder;

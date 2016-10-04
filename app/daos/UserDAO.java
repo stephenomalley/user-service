@@ -9,6 +9,6 @@ import models.User;
 public interface UserDAO {
 
     User find(Integer id);
-
+    User create(User user);
     void setFinder(Model.Finder<Integer, User> finder);
 }

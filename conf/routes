@@ -3,7 +3,8 @@
 # ~~~~
 
 #
-GET     /users/:id                  controllers.UserController.get(id:Integer)
+GET     /users/:id                 controllers.UserController.get(id:Integer)
+POST    /users/                    controllers.UserController.create()
 
 # ErrorCode detail pages
 GET     /errorcode              controllers.Assets.at(path="/public", file="html/errorcodes.html")

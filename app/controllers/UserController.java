@@ -1,16 +1,19 @@
 package controllers;
 
 import com.avaje.ebean.annotation.Transactional;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.User;
+
+import play.data.Form;
+import play.data.FormFactory;
 import play.libs.Json;
-import play.mvc.Controller;
-import play.mvc.Result;
+import play.mvc.*;
 import services.UserService;
 
 import javax.inject.Inject;
 
-import static utils.Constants.NOT_FOUND_MSG;
+import static utils.Constants.*;
 
 /**
  * Created by somalley on 28/09/16.
@@ -18,10 +21,13 @@ import static utils.Constants.NOT_FOUND_MSG;
 public class UserController extends Controller {
 
     private final UserService userService;
+    private FormFactory formFactory;
+//    private static Form<User> userForm = formFactory.form(User.class);
 
     @Inject
-    public UserController(UserService userService) {
+    public UserController(UserService userService, FormFactory formFactory) {
         this.userService = userService;
+        this.formFactory = formFactory;
     }
 
     @Transactional(readOnly = true)
@@ -33,9 +39,19 @@ public class UserController extends Controller {
         return ok(Json.toJson(user)).as("application/json");
     }
 
+    @Transactional
+    public Result create(){
+        Form<User> userData = formFactory.form(User.class).bindFromRequest();
+        if (userData.hasErrors()) {
+            return badRequest(getErrorResponse(INVALID_DATA_MSG+userData.errorsAsJson(), 100, null)).as("application/json");
+        }
+        return created(Json.toJson(userService.create(userData.get())));
+    }
+
     private ObjectNode getErrorResponse(String message, int errorCode, Integer id) {
         ObjectNode body = Json.newObject();
-        body.put("message", message + " [" + id + "].");
+	    String suffix = (id == null) ? "": "[" + id + "].";
+        body.put("message", message + suffix);
         body.put("errorCode", errorCode);
         body.put("additionalInformation", routes.Assets.at("public/html/errorcode.html").absoluteURL(request()));
         return body;

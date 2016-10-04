@@ -8,4 +8,5 @@ import models.User;
 public interface UserService {
 
     User find(Integer id);
+    User create(User user);
 }

@@ -17,7 +17,8 @@ public class TestUserDAOImpl extends WithApplication {
 
     @Before
     public void setup() {
-        User user = new User("test-username");
+        User user = new User();
+        user.username = "test-username";
         user.save();
     }
 
@@ -37,7 +38,7 @@ public class TestUserDAOImpl extends WithApplication {
             UserDAOImpl dao = new UserDAOImpl();
             dao.setFinder(new Model.Finder<>(User.class));
             User actual = dao.find(1);
-            assertEquals(actual.userName, "test-username");
+            assertEquals(actual.username, "test-username");
         });
     }
 
