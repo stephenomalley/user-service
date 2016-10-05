@@ -2,6 +2,8 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Home
+GET     /                          controllers.Assets.at(path="/public", file="html/index.html")
 #
 GET     /users/:id                 controllers.UserController.get(id:Integer)
 POST    /users/                    controllers.UserController.create()
