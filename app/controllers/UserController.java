@@ -43,7 +43,7 @@ public class UserController extends Controller {
     public Result create(){
         Form<User> userData = formFactory.form(User.class).bindFromRequest();
         if (userData.hasErrors()) {
-            return badRequest(getErrorResponse(INVALID_DATA_MSG+userData.errorsAsJson(), 100, null)).as("application/json");
+            return badRequest(getErrorResponse(INVALID_DATA_MSG+userData.errorsAsJson(), 102, null)).as("application/json");
         }
         return created(Json.toJson(userService.create(userData.get())));
     }
@@ -53,7 +53,7 @@ public class UserController extends Controller {
 	    String suffix = (id == null) ? "": "[" + id + "].";
         body.put("message", message + suffix);
         body.put("errorCode", errorCode);
-        body.put("additionalInformation", routes.Assets.at("public/html/errorcode.html").absoluteURL(request()));
+        body.put("additionalInformation", request().host()+"/#/errordocs/"+errorCode);
         return body;
     }
 
