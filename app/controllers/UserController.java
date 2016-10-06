@@ -22,7 +22,6 @@ public class UserController extends Controller {
 
     private final UserService userService;
     private FormFactory formFactory;
-//    private static Form<User> userForm = formFactory.form(User.class);
 
     @Inject
     public UserController(UserService userService, FormFactory formFactory) {

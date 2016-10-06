@@ -6,7 +6,8 @@ RestAPI for simple user model
 
 | Method | URI | Data | HTTP Code | Response (in JSON) |
 | ------ | --- | ---- | --------- | ------------------ |
-| GET | /user/id |  | 200 | {"id": 1,"name": "Josrom"} |
+| GET | /users/id |  | 200 | {"id": 1,"name": "Josrom"} |
+| POST | /users/ ||||
 
 CHANGELOG
 =========
@@ -14,3 +15,16 @@ CHANGELOG
 ## Version 1.0
 
 - App base
+
+
+TODO
+====
+* Need to update angular side to use closures
+* Need to add something on homepage, probably a paginated list of users
+* Need to add update end point
+* Need to add delete end point
+* Fix tests
+* Add angular tests
+* Add Tests for create functionality
+* Resolve issues with creating test database in unit tests
+
