@@ -1,66 +1,93 @@
 package functional.daos;
 
 import com.avaje.ebean.Model;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Module;
+import com.typesafe.config.ConfigFactory;
+import daos.UserDAO;
 import daos.UserDAOImpl;
 import models.User;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import play.test.WithApplication;
+import play.Application;
+import play.ApplicationLoader;
+import play.Configuration;
+import play.Environment;
+import play.inject.guice.GuiceApplicationBuilder;
+import play.inject.guice.GuiceApplicationLoader;
+import play.test.Helpers;
+import services.UserService;
+import services.UserServiceImpl;
 
 import static org.junit.Assert.*;
-import static play.test.Helpers.*;
 
 /**
  * Created by somalley on 29/09/16.
  */
-public class TestUserDAOImpl extends WithApplication {
+public class TestUserDAOImpl {
+
+    private User user;
+    private UserDAOImpl dao;
+
+    @Inject
+    Application application;
 
     @Before
     public void setup() {
-        User user = new User();
+        Module testModule = new AbstractModule() {
+            @Override
+            public void configure() {
+                bind(UserService.class).to(UserServiceImpl.class);
+                bind(UserDAO.class).to(UserDAOImpl.class);
+            }
+        };
+        GuiceApplicationBuilder builder = new GuiceApplicationLoader()
+                .builder(new ApplicationLoader.Context(Environment.simple()))
+                .overrides(testModule)
+                .loadConfig(new Configuration(ConfigFactory.load("application.test.conf")));
+        Guice.createInjector(builder.applicationModule()).injectMembers(this);
+
+        Helpers.start(application);
+        user = new User();
         user.username = "test-username";
         user.save();
+        dao = new UserDAOImpl();
+        dao.setFinder(new Model.Finder<>(User.class));
+    }
+
+    @After
+    public void teardown() {
+        user.delete();
+        Helpers.stop(application);
     }
 
     @Test
     public void testFindUserInDatabase() {
-        running(fakeApplication(inMemoryDatabase("test")), () -> {
-            UserDAOImpl dao = new UserDAOImpl();
-            dao.setFinder(new Model.Finder<>(User.class));
-            User actual = dao.find(1);
-            assertNotNull(actual);
-        });
+        User actual = dao.find(user.id);
+        assertNotNull(actual);
     }
 
     @Test
     public void testFindUserInDatabaseCorrectUsername() {
-        running(fakeApplication(inMemoryDatabase("test")), () -> {
-            UserDAOImpl dao = new UserDAOImpl();
-            dao.setFinder(new Model.Finder<>(User.class));
-            User actual = dao.find(1);
-            assertEquals(actual.username, "test-username");
-        });
+        User actual = dao.find(user.id);
+        assertEquals(actual.username, "test-username");
     }
 
     @Test
     public void testCantFindUserNotInDatabase() {
-        running(fakeApplication(inMemoryDatabase("test")), () -> {
-            UserDAOImpl dao = new UserDAOImpl();
-            dao.setFinder(new Model.Finder<>(User.class));
-            User actual = dao.find(1000);
-            assertNull(actual);
-        });
+        User actual = dao.find(1000);
+        assertNull(actual);
     }
 
     @Test
     public void testFindCorrectUserInDatabase() {
-        running(fakeApplication(inMemoryDatabase("test")), () -> {
-            User expected = new User();
-            expected.save();
-            UserDAOImpl dao = new UserDAOImpl();
-            dao.setFinder(new Model.Finder<>(User.class));
-            User actual = dao.find(expected.id);
-            assertEquals(expected, actual);
-        });
+        User expected = new User();
+        expected.save();
+        User actual = dao.find(expected.id);
+        assertEquals(expected, actual);
+        expected.delete();
     }
 }

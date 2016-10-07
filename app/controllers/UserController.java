@@ -1,19 +1,19 @@
 package controllers;
 
 import com.avaje.ebean.annotation.Transactional;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.User;
-
 import play.data.Form;
 import play.data.FormFactory;
 import play.libs.Json;
-import play.mvc.*;
+import play.mvc.Controller;
+import play.mvc.Result;
 import services.UserService;
 
 import javax.inject.Inject;
 
-import static utils.Constants.*;
+import static utils.Constants.INVALID_DATA_MSG;
+import static utils.Constants.NOT_FOUND_MSG;
 
 /**
  * Created by somalley on 28/09/16.

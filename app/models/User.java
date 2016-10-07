@@ -35,7 +35,6 @@ public class User extends Model {
     @CreatedTimestamp
     public Timestamp createdTimestamp;
 
-    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     public Timestamp deletedTimestamp;
 
     @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
