@@ -4,6 +4,8 @@ import com.avaje.ebean.Model.Finder;
 import com.google.inject.Inject;
 import models.User;
 
+import javax.persistence.PersistenceException;
+
 /**
  * Created by somalley on 28/09/16.
  */
@@ -21,7 +23,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User create(User user) {
+    public User create(User user) throws PersistenceException {
         user.save();
         return user;
     }

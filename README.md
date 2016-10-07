@@ -6,8 +6,8 @@ RestAPI for simple user model
 
 | Method | URI | Data | HTTP Code | Response (in JSON) |
 | ------ | --- | ---- | --------- | ------------------ |
-| GET | /users/id |  | 200 | {"id": 1,"name": "Josrom"} |
-| POST | /users/ ||||
+| GET | /users/id |  | 200 | {"id": 1,"name": "somalley"} |
+| POST | /users/  |  |201|{"id": 1,"name": "somalley"}|
 
 CHANGELOG
 =========
@@ -25,6 +25,6 @@ TODO
 * Need to add delete end point
 * Fix tests
 * Add angular tests
-* Add Tests for create functionality
+* Add Tests for create functionality (Duplicate)
 * Resolve issues with creating test database in unit tests
 

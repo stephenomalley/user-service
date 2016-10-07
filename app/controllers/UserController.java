@@ -11,9 +11,9 @@ import play.mvc.Result;
 import services.UserService;
 
 import javax.inject.Inject;
+import javax.persistence.PersistenceException;
 
-import static utils.Constants.INVALID_DATA_MSG;
-import static utils.Constants.NOT_FOUND_MSG;
+import static utils.Constants.*;
 
 /**
  * Created by somalley on 28/09/16.
@@ -44,7 +44,11 @@ public class UserController extends Controller {
         if (userData.hasErrors()) {
             return badRequest(getErrorResponse(INVALID_DATA_MSG+userData.errorsAsJson(), 102, null)).as("application/json");
         }
-        return created(Json.toJson(userService.create(userData.get())));
+        try {
+            return created(Json.toJson(userService.create(userData.get())));
+        } catch (PersistenceException e) {
+            return badRequest(getErrorResponse(DUPLICATE_USER_MSG, 103, null)).as("application/json");
+        }
     }
 
     private ObjectNode getErrorResponse(String message, int errorCode, Integer id) {

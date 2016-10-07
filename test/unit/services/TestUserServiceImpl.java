@@ -25,20 +25,20 @@ public class TestUserServiceImpl {
 
     @Before
     public void setup(){
-        this.service = new UserServiceImpl(mockDao);
+        service = new UserServiceImpl(mockDao);
     }
 
     @Test
     public void testServiceCallsDao(){
         when(mockDao.find(1)).thenReturn(mock(User.class));
-        this.service.find(1);
+        service.find(1);
         verify(mockDao).find(1);
     }
 
     @Test
     public void testServiceReturnsUser(){
         when(mockDao.find(1000)).thenReturn(mock(User.class));
-        User actual = this.service.find(1000);
+        User actual = service.find(1000);
         assertTrue(actual instanceof User);
         verify(mockDao).find(1000);
     }
@@ -46,8 +46,17 @@ public class TestUserServiceImpl {
     @Test
     public void testServiceReturnsNull(){
         when(mockDao.find(2)).thenReturn(null);
-        User actual = this.service.find(2);
+        User actual = service.find(2);
         assertNull(actual);
         verify(mockDao).find(2);
+    }
+
+    @Test
+    public void testServiceCreatesUser() {
+        User user = new User();
+        when(mockDao.create(user)).thenReturn(user);
+        User actual = service.create(user);
+        assertEquals(user, actual);
+        verify(mockDao).create(user);
     }
 }

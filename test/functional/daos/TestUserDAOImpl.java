@@ -10,6 +10,7 @@ import daos.UserDAO;
 import daos.UserDAOImpl;
 import models.User;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import play.Application;
@@ -21,6 +22,8 @@ import play.inject.guice.GuiceApplicationLoader;
 import play.test.Helpers;
 import services.UserService;
 import services.UserServiceImpl;
+
+import javax.persistence.PersistenceException;
 
 import static org.junit.Assert.*;
 
@@ -89,5 +92,20 @@ public class TestUserDAOImpl {
         User actual = dao.find(expected.id);
         assertEquals(expected, actual);
         expected.delete();
+    }
+
+    @Test
+    public void testCantCreateDuplicateUsers() {
+        User newUser = new User();
+        newUser.username = "test-username";
+
+        try {
+            dao.create(newUser);
+        } catch (PersistenceException e) {
+            return;
+        }
+
+        Assert.fail("Duplicate user was created");
+
     }
 }

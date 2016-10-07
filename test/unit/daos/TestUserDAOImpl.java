@@ -3,6 +3,7 @@ package unit.daos;
 import com.avaje.ebean.Model.Finder;
 import daos.UserDAOImpl;
 import models.User;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -10,9 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static play.test.Helpers.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by somalley on 28/09/16.
@@ -23,11 +22,18 @@ public class TestUserDAOImpl {
     @Mock
     public static Finder<Integer, User> mockFinder;
 
+    private UserDAOImpl dao;
+
+    @Before
+    public void setup() {
+        dao = new UserDAOImpl();
+        dao.setFinder(mockFinder);
+
+    }
+
     @Test
     public void testFindUserReturnsUser() {
         User expected = new User();
-        UserDAOImpl dao = new UserDAOImpl();
-        dao.setFinder(mockFinder);
         when(mockFinder.byId(1)).thenReturn(expected);
         User actual = dao.find(1);
         assertEquals(actual, expected);
@@ -36,11 +42,16 @@ public class TestUserDAOImpl {
 
     @Test
     public void testFindUserWhenUserMissing() {
-        UserDAOImpl dao = new UserDAOImpl();
-        dao.setFinder(mockFinder);
         when(mockFinder.byId(1)).thenReturn(null);
         User actual = dao.find(1);
         assertNull(actual);
         verify(mockFinder).byId(1);
+    }
+
+    @Test
+    public void testCreateNewUser() {
+        User user = mock(User.class);
+        User newUser = dao.create(user);
+        verify(user).save();
     }
 }
