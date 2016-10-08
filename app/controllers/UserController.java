@@ -47,7 +47,7 @@ public class UserController extends Controller {
         try {
             return created(Json.toJson(userService.create(userData.get())));
         } catch (PersistenceException e) {
-            return badRequest(getErrorResponse(DUPLICATE_USER_MSG, 103, null)).as("application/json");
+            return badRequest(getDetailedErrorResponse(e, 103, null)).as("application/json");
         }
     }
 
@@ -60,4 +60,17 @@ public class UserController extends Controller {
         return body;
     }
 
+    private ObjectNode getDetailedErrorResponse(Exception error, int errorCode, Integer id) {
+
+        ObjectNode body = Json.newObject();
+        ObjectNode message = body.putObject("message");
+        body.put("errorCode", errorCode);
+        body.put("additionalInformation", request().host() + "/#/errordocs/" + errorCode);
+
+        message.put("description", PERSISTENCE_EX_MSG);
+        message.put("message", error.getCause().getLocalizedMessage());
+        message.put("detail", error.getLocalizedMessage());
+
+        return body;
+    }
 }

@@ -20,6 +20,7 @@ import play.mvc.Result;
 import play.test.WithApplication;
 import services.UserService;
 
+import javax.persistence.PersistenceException;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
@@ -30,6 +31,7 @@ import static play.mvc.Http.Status;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.fakeRequest;
 import static utils.Constants.INVALID_DATA_MSG;
+import static utils.Constants.PERSISTENCE_EX_MSG;
 
 /**
  * Created by somalley on 30/09/16.
@@ -261,6 +263,57 @@ public class TestUserController extends WithApplication {
             verify(userData).hasErrors();
             verify(userData).errorsAsJson();
         }
+    }
+
+    @Test
+    public void testCreateDuplicateGeneratesDetailMessage() {
+        User newUser = getTestUser("a", "a@b.com");
+        ObjectMapper mapper = new ObjectMapper();
+        Form<User> userData = mock(Form.class);
+        when(mockForm.form(User.class).bindFromRequest()).thenReturn(userData);
+        when(userData.hasErrors()).thenReturn(false);
+        when(userData.get()).thenReturn(newUser);
+        when(mockService.create(newUser)).thenThrow(mock(PersistenceException.class, RETURNS_DEEP_STUBS));
+
+        try {
+            when(mockForm.form(User.class).bindFromRequest()).thenReturn(userData);
+            when(userData.hasErrors()).thenReturn(false);
+            when(userData.errorsAsJson()).thenReturn((JsonNode) mapper.readTree("\"username is required\""));
+
+            Result response = controller.create();
+
+            JsonNode actual = (JsonNode) mapper.readTree(contentAsString(response));
+
+            assertTrue(actual.get("message").get("description").toString().contains(PERSISTENCE_EX_MSG));
+        } catch (IOException e) {
+            Assert.fail("Failed to convert response to Json");
+        } finally {
+            verify(mockForm, atLeastOnce()).form(User.class);
+            verify(mockForm.form(User.class)).bindFromRequest();
+            verify(userData).hasErrors();
+            verify(userData).get();
+            verify(mockService).create(newUser);
+        }
+    }
+
+    @Test
+    public void testCreateDuplicateThrowsException() {
+        User newUser = getTestUser("a", "a@b.com");
+
+        Form<User> userData = mock(Form.class);
+        when(mockForm.form(User.class).bindFromRequest()).thenReturn(userData);
+        when(userData.hasErrors()).thenReturn(false);
+        when(userData.get()).thenReturn(newUser);
+        when(mockService.create(newUser)).thenThrow(mock(PersistenceException.class, RETURNS_DEEP_STUBS));
+
+        Result response = controller.create();
+        assertEquals(Status.BAD_REQUEST, response.status());
+
+        verify(mockForm, atLeastOnce()).form(User.class);
+        verify(mockForm.form(User.class)).bindFromRequest();
+        verify(userData).hasErrors();
+        verify(userData).get();
+        verify(mockService).create(newUser);
     }
 
     private User getTestUser(String username, String email) {

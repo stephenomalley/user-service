@@ -6,8 +6,8 @@ RestAPI for simple user model
 
 | Method | URI | Data | HTTP Code | Response (in JSON) |
 | ------ | --- | ---- | --------- | ------------------ |
-| GET | /users/id |  | 200 | {"id": 1,"name": "somalley"} |
-| POST | /users/  |  |201|{"id": 1,"name": "somalley"}|
+| GET  | /users/id |  | 200 | {"id": 1,"name": "somalley"} |
+| POST | /users/   |  | 201 | {"id": 1,"name": "somalley"} |
 
 CHANGELOG
 =========

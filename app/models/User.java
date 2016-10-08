@@ -11,10 +11,6 @@ import java.sql.Timestamp;
 @Entity
 public class User extends Model {
 
-    public String validate() {
-        return null;
-    }
-
     public User() {
     }
 
@@ -41,11 +37,59 @@ public class User extends Model {
     @UpdatedTimestamp
     public Timestamp updatedTimestamp;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Timestamp getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
+    public void setCreatedTimestamp(Timestamp createdTimestamp) {
+        this.createdTimestamp = createdTimestamp;
+    }
+
+    public Timestamp getDeletedTimestamp() {
+        return deletedTimestamp;
+    }
+
+    public void setDeletedTimestamp(Timestamp deletedTimestamp) {
+        this.deletedTimestamp = deletedTimestamp;
+    }
+
+    public Timestamp getUpdatedTimestamp() {
+        return updatedTimestamp;
+    }
+
+    public void setUpdatedTimestamp(Timestamp updatedTimestamp) {
+        this.updatedTimestamp = updatedTimestamp;
     }
 }
