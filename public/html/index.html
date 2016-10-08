@@ -17,12 +17,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Vendor: Bootstrap Stylesheets http://getbootstrap.com -->
-    <link rel="stylesheet" type="text/css/" href="assets/css/libs/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css/" href="assets/css/libs/bootstrap-theme.min.css">
-    <link rel="stylesheet" type="text/css/" href="assets/css/libs/font-awesome.min.css" >
+    <link rel="stylesheet" href="assets/css/libs/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/libs/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="assets/css/libs/font-awesome.min.css">
 
     <!-- Our Website CSS Styles -->
-    <link rel="stylesheet" type="text/css/" href="css/main.css">
+    <link rel="stylesheet" href="assets/css/main.css">
 
 </head>
 <body ng-app="userService">
@@ -32,7 +32,9 @@
 <![endif]-->
 
 <!-- Our Website Content Goes Here -->
-<div ng-view></div>
+<div ng-view>
+
+</div>
 
 <!-- Vendor: Javascripts -->
 <script type="text/javascript" src="assets/js/libs/jquery.min.js"></script>
@@ -46,6 +48,7 @@
 <script type="text/javascript" src="assets/js/app.js"></script>
 <script type="text/javascript" src="assets/js/controllers/page.ctrl.js"></script>
 <script type="text/javascript" src="assets/js/controllers/error.ctrl.js"></script>
+<script type="text/javascript" src="assets/js/controllers/user.ctrl.js"></script>
 
 </body>
 </html>
