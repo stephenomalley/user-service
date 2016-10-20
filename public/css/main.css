@@ -5,3 +5,7 @@
 .ng-valid.ng-dirty{
     border-color: green;
 }
+
+.top {
+    margin-top: 5%;
+}

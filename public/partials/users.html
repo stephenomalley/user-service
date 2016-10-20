@@ -1,0 +1,17 @@
+<h3>Current users</h3>
+<table class="table table-bordered">
+    <thead class="thead-inverse">
+    <tr>
+        <th>Username</th>
+        <th>Name</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody ng-repeat="user in pageCtrl.users">
+    <tr>
+        <td>{{user.username}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.email}}</td>
+    </tr>
+    </tbody>
+</table>

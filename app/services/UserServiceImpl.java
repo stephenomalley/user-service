@@ -6,6 +6,7 @@ import daos.UserDAO;
 import models.User;
 
 import javax.persistence.PersistenceException;
+import java.util.List;
 
 /**
  * Created by somalley on 28/09/16.
@@ -24,6 +25,12 @@ public class UserServiceImpl implements UserService {
     public User find(Integer id) {
         return userDAO.find(id);
     }
+
+    @Override
+    public List<User> findAll() {
+        return userDAO.findAll();
+    }
+
 
     @Override
     public User create(User user) throws PersistenceException {

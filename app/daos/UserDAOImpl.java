@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import models.User;
 
 import javax.persistence.PersistenceException;
+import java.util.List;
 
 /**
  * Created by somalley on 28/09/16.
@@ -20,6 +21,11 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User find(Integer id) {
         return this.finder.byId(id);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return this.finder.findList();
     }
 
     @Override

@@ -1,0 +1,24 @@
+<form class="col-sm-8" name="userAddForm" ng-controller="UserCtrl as userCtrl"
+      ng-submit="userAddForm.$valid && userCtrl.addUser()" novalidate>
+    <h3>Preview:</h3>
+    <div class="list-group">
+        <user-preview></user-preview>
+        <div class="list-group-item col-sm-8">
+            <fieldset class="form-group ">
+                <input ng-model="userCtrl.user.name" class="form-control pull-left" placeholder="Name"
+                       title="Name"/>
+            </fieldset>
+            <fieldset class="form-group">
+                <input ng-model="userCtrl.user.username" class="form-control pull-left" placeholder="Username"
+                       title="Username" required/>
+            </fieldset>
+            <fieldset class="form-group">
+                <input ng-model="userCtrl.user.email" type="email" class="form-control pull-left"
+                       placeholder="jimmyDean@example.org" title="Email"/>
+            </fieldset>
+            <fieldset class="form-group">
+                <input type="submit" class="btn btn-primary pull-right" value="Submit User"/>
+            </fieldset>
+        </div>
+    </div>
+</form>

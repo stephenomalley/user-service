@@ -1,5 +1,10 @@
-<div ng-controller="ErrorCtrl as codes">
-    <h3>{{codes.error.name}}: <em>{{codes.error.code}}</em></h3>
-    <p>{{codes.error.description}}</p>
+<div class="container">
+    <div class="row top" ng-controller="ErrorCtrl as codes">
+        <div class="panel panel-primary">
+            <div class="panel-heading "><h1>{{codes.error.name}}: <em>{{codes.error.code}}</em></h1></div>
+            <div class="panel-body"><h4>{{codes.error.description}}</h4></div>
+        </div>
+    </div>
 </div>
-</div>
+
+

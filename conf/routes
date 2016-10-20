@@ -3,14 +3,12 @@
 # ~~~~
 
 # Home
-GET     /errordocs                 controllers.Assets.at(path="/public", file="html/index.html")
-GET     /                          controllers.Assets.at(path="/public", file="html/index.html")
+GET     /                          controllers.Assets.at(path="/public", file="index.html")
 #
 GET     /users/:id                 controllers.UserController.get(id:Integer)
+GET     /users/                    controllers.UserController.list()
 POST    /users/                    controllers.UserController.create()
 
-# ErrorCode detail pages
-GET     /errorcode              controllers.Assets.at(path="/public", file="html/errorcodes.html")
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 

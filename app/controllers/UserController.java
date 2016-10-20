@@ -12,6 +12,7 @@ import services.UserService;
 
 import javax.inject.Inject;
 import javax.persistence.PersistenceException;
+import java.util.List;
 
 import static utils.Constants.*;
 
@@ -37,6 +38,14 @@ public class UserController extends Controller {
         }
         return ok(Json.toJson(user)).as("application/json");
     }
+
+
+    @Transactional(readOnly = true)
+    public Result list() {
+        List<User> users = userService.findAll();
+        return ok(Json.toJson(users)).as("application/json");
+    }
+
 
     @Transactional
     public Result create(){
