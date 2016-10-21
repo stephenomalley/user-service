@@ -9,6 +9,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import services.UserServiceImpl;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -58,5 +61,14 @@ public class TestUserServiceImpl {
         User actual = service.create(user);
         assertEquals(user, actual);
         verify(mockDao).create(user);
+    }
+
+    @Test
+    public void testServiceFindsAllUsers() {
+        List<User> expected = Arrays.asList(new User[]{mock(User.class)});
+        when(mockDao.findAll()).thenReturn(expected);
+        List<User> actual = service.findAll();
+        assertEquals(expected, actual);
+        verify(mockDao).findAll();
     }
 }

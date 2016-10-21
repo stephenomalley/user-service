@@ -9,6 +9,10 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
@@ -51,7 +55,23 @@ public class TestUserDAOImpl {
     @Test
     public void testCreateNewUser() {
         User user = mock(User.class);
-        User newUser = dao.create(user);
+        dao.create(user);
         verify(user).save();
     }
+
+    @Test
+    public void testFindAll() {
+        when(mockFinder.findList()).thenReturn(new ArrayList<>());
+        dao.findAll();
+        verify(mockFinder).findList();
+    }
+
+    @Test
+    public void testFindAllReturnsList() {
+        when(mockFinder.findList()).thenReturn(Arrays.asList(new User[]{mock(User.class)}));
+        List<User> actual = dao.findAll();
+        assertEquals(1, actual.size());
+        verify(mockFinder).findList();
+    }
+
 }

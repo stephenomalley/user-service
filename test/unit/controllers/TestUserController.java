@@ -22,9 +22,10 @@ import services.UserService;
 
 import javax.persistence.PersistenceException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static play.inject.Bindings.bind;
 import static play.mvc.Http.Status;
@@ -40,6 +41,7 @@ import static utils.Constants.PERSISTENCE_EX_MSG;
 public class TestUserController extends WithApplication {
 
     private final UserService mockService = mock(UserService.class);
+    private ObjectMapper mapper = new ObjectMapper();
 
     private FormFactory mockForm;
     private UserController controller;
@@ -152,7 +154,6 @@ public class TestUserController extends WithApplication {
 
         Result response = controller.create();
         try {
-            ObjectMapper mapper = new ObjectMapper();
             User actual = mapper.readValue(contentAsString(response), User.class);
             assertEquals(actual, created);
         } catch (IOException e) {
@@ -190,7 +191,6 @@ public class TestUserController extends WithApplication {
     @Test
     public void testCreateBadRequestHasErrorCode() {
         Form<User> userData = mock(Form.class);
-        ObjectMapper mapper = new ObjectMapper();
 
         try {
             JsonNode expected = (JsonNode) mapper.readTree(getTestResponse("", 102).toString());
@@ -217,8 +217,6 @@ public class TestUserController extends WithApplication {
     @Test
     public void testCreateBadRequestHasErrorLink() {
         Form<User> userData = mock(Form.class);
-        ObjectMapper mapper = new ObjectMapper();
-
         try {
             JsonNode expected = (JsonNode) mapper.readTree(getTestResponse("", 102).toString());
 
@@ -243,7 +241,6 @@ public class TestUserController extends WithApplication {
     @Test
     public void testCreateBadRequestHasErrorMessage() {
         Form<User> userData = mock(Form.class);
-        ObjectMapper mapper = new ObjectMapper();
 
         try {
             when(mockForm.form(User.class).bindFromRequest()).thenReturn(userData);
@@ -268,7 +265,6 @@ public class TestUserController extends WithApplication {
     @Test
     public void testCreateDuplicateGeneratesDetailMessage() {
         User newUser = getTestUser("a", "a@b.com");
-        ObjectMapper mapper = new ObjectMapper();
         Form<User> userData = mock(Form.class);
         when(mockForm.form(User.class).bindFromRequest()).thenReturn(userData);
         when(userData.hasErrors()).thenReturn(false);
@@ -314,6 +310,43 @@ public class TestUserController extends WithApplication {
         verify(userData).hasErrors();
         verify(userData).get();
         verify(mockService).create(newUser);
+    }
+
+    @Test
+    public void testFindAllReturnsStatusOk() {
+        List<User> expected = Arrays.asList(new User[]{});
+        when(mockService.findAll()).thenReturn(expected);
+        Result response = controller.list();
+        assertEquals(Status.OK, response.status());
+    }
+
+    @Test
+    public void testFindAllReturnsEmptyJsonData() {
+        List<User> expected = Arrays.asList(new User[]{});
+        when(mockService.findAll()).thenReturn(expected);
+        Result response = controller.list();
+
+        try {
+            JsonNode actual = (JsonNode) mapper.readTree(contentAsString(response));
+            assertEquals(0, actual.size());
+        } catch (IOException e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testFindAllReturnsUserReturnsAsJson() {
+        User testUser = getTestUser("davey", "davey@hola.com");
+        List<User> expected = Arrays.asList(new User[]{testUser});
+        when(mockService.findAll()).thenReturn(expected);
+        Result response = controller.list();
+
+        try {
+            User[] actual = mapper.readValue(contentAsString(response), User[].class);
+            assertEquals(testUser.getUsername(), actual[0].getUsername());
+        } catch (IOException e) {
+            fail();
+        }
     }
 
     private User getTestUser(String username, String email) {
