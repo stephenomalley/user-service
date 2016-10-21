@@ -6,8 +6,9 @@ RestAPI for simple user model
 
 | Method | URI | Data | HTTP Code | Response (in JSON) |
 | ------ | --- | ---- | --------- | ------------------ |
-| GET  | /users/id |  | 200 | {"id": 1,"name": "somalley"} |
-| POST | /users/   |  | 201 | {"id": 1,"name": "somalley"} |
+| GET  | /users/id |  | 200 | {"id": 1,"name": "somalley"}    |
+| GET  | /users/   |  | 200 | [{"id": 1,"name": "somalley"},] |
+| POST | /users/   |  | 201 | {"id": 1,"name": "somalley"}    |
 
 CHANGELOG
 =========
@@ -19,8 +20,7 @@ CHANGELOG
 
 TODO
 ====
-* Need to update angular side to use closures
-* Need to add something on homepage, probably a paginated list of users
+* Need to refresh homepage after post is made
 * Need to add update end point
 * Need to add delete end point
 * Fix tests
